@@ -1,4 +1,7 @@
+use std::env;
 use teloxide::prelude::*;
+use dotenv::*;
+
 mod handlers;
 
 #[tokio::main]
