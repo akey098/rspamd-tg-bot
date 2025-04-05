@@ -1,9 +1,6 @@
+use crate::handlers::scan_msg;
 use std::error::Error;
 use teloxide::prelude::*;
-use rspamd_client::{config::Config};
-use std::sync::Arc;
-use rspamd_client::protocol::RspamdScanReply;
-use crate::handlers::scan_msg;
 
 pub async fn handle_message(
     bot: Bot,
@@ -23,11 +20,13 @@ pub async fn handle_message(
     if scan_result.score >= 10.0 || scan_result.symbols.contains_key("TG_FLOOD") || scan_result.symbols.contains_key("TG_SUSPICIOUS") {
         // For instance, delete the message using your async Telegram API client.
         println!("Deleting message {} from chat {} because it appears to be spam.", message.id, message.chat.id);
-        // telegram_api::delete_message(chat_id, message_id).await?;
+        bot.delete_message(message.chat.id, message.id).await?;
     } else if scan_result.score >= 5.0 {
         // Optionally, warn the user.
         println!("Warning user {} in chat {} about spammy behavior.", message.from.unwrap().id, message.chat.id);
-        // telegram_api::send_message(chat_id, "Please refrain from spamming.").await?;
+        bot.send_message(message.chat.id, "You are behaving spammy. Further actions will result ban.").await?;        
+    } else {
+        println!("Message is ok")
     }
 
     Ok(())

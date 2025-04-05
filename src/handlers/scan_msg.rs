@@ -1,6 +1,5 @@
-use std::sync::Arc;
+use rspamd_client::{config::Config, error::RspamdError, protocol::RspamdScanReply, scan_async};
 use teloxide::prelude::*;
-use rspamd_client::{config::Config, scan_async, error::RspamdError, protocol::RspamdScanReply};
 
 pub async fn scan_msg(msg: Message, text: String) -> Result<RspamdScanReply, RspamdError> {
     let user = msg.from.unwrap();

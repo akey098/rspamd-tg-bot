@@ -1,7 +1,7 @@
 [package]
 name = "rspamd-tg-bot"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 rspamd-client = { version = "0.1", features = ["async"] }
